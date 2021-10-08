@@ -51,7 +51,7 @@ if __name__ == '__main__':
         exit(1)
 
     # Scroll to the bottom of page until all raffles have loaded
-    while not driver.find_elements_by_xpath('//*[contains(text(), "That\'s all, no more!")]'):
+    while not driver.find_elements_by_xpath('//*[contains(text(), "That\'s all, no more!")]')[0].is_displayed():
         print('Loading more raffles...')
         driver.execute_script('window.scrollTo(0, document.body.scrollHeight - 200)')
         rSleep(0.5, 1.5)
