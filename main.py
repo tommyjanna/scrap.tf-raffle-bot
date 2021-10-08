@@ -82,8 +82,8 @@ for raffle in raffles:
     except Exception as exception:
         print('Unexpected exception...', str(exception), file=sys.stderr)
     else:
-        print('.', end='')
+        print('.', end='', flush=True)
 
-    rSleep(wait_between_raffles_min, wait_between_raffles_max)
+    random_sleep(wait_between_raffles_min, wait_between_raffles_max)
 
-print('Execution completed')
+print('\nExecution completed')
