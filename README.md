@@ -4,7 +4,7 @@
 Automation tool that enters item raffles on Scrap.TF, a bot trading site for Valve's Team Fortress 2.
 
 ## Installation & Usage
-This project requires Python 3 and Selenium's Python library implementation which can be found on the [PyPI](https://pypi.org/project/selenium/). It can be installed using pip using `pip3 install selenium`.
+This project requires Python 3 and Selenium's Python library implementation which can be found on the [PyPI](https://pypi.org/project/selenium/). It can be installed using pip using `pip3 install selenium`. More conveniently, the library may also be included in your distributions repository, such as on Debian based systems, it can be installed using, `apt install python3-selenium`.
 
 Additionally, a web driver is also required. This project was tested using Mozilla's [geckodriver](https://github.com/mozilla/geckodriver/releases), but can conceivably function using ChromeDriver as well.
 
@@ -23,8 +23,9 @@ Developed and tested using:
 * Debian 11
 * geckodriver 0.30.0
 * Python 3.9.2
-* Selenium 3.141.0
+* Selenium 4.0.0
 
 ## Planned Features
 * Save cookies to retain persistent login
 * Option to run for long periods of time with new raffle detection
+* Detect raffles that have been won, skip them and inform user
