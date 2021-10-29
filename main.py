@@ -7,8 +7,7 @@ Oct. 7, 2021
 '''
 
 import sys
-import time
-import random
+import util
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
@@ -22,18 +21,6 @@ wait_page_load = 10
 wait_between_raffles_min = 2.5
 wait_between_raffles_max = 7.5
 
-def random_sleep(time_min: float, time_max: float):
-    '''
-    Sleep for a random amount of time within an interval
-
-    Parameters:
-        time_min (float): Lower time interval bound
-        time_max (float): Upper time interval bound
-    '''
-
-    time_to_sleep = random.uniform(time_min, time_max)
-    time.sleep(time_to_sleep)
-
 
 # User defined path to web driver
 driver_path = './geckodriver'
@@ -44,8 +31,22 @@ serv = Service(driver_path)
 driver = webdriver.Firefox(service=serv)
 driver.get('https://scrap.tf/raffles')
 
-print('Please sign in through Steam, then press enter to begin...')
-input()
+# Look for cookie file
+found_cookie = util.cookie_read('cookie')
+
+if not found_cookie:
+    print('Please sign in through Steam, then press enter to begin...')
+    input()
+
+    # Get the cookie from the driver and write it to the cookie file
+    found_cookie = driver.get_cookie('scr_session')
+    util.cookie_write('cookie', found_cookie)
+else:
+    # Apply cookie found in the cookie file
+    driver.add_cookie(found_cookie)
+
+# Reload webpage
+driver.get('https://scrap.tf/raffles')
 
 # Make sure user is logged in
 if not driver.find_elements_by_xpath('//li[@class="dropdown nav-userinfo"]'):
@@ -56,7 +57,7 @@ if not driver.find_elements_by_xpath('//li[@class="dropdown nav-userinfo"]'):
 while not driver.find_elements_by_xpath('//*[contains(text(), "That\'s all, no more!")]')[0].is_displayed():
     print('Loading more raffles...')
     driver.execute_script('window.scrollTo(0, document.body.scrollHeight - 200)')
-    random_sleep(0.5, 1.5)
+    util.random_sleep(0.5, 1.5)
 
 # Get the non-entered raffles
 # Entered raffle:      <... class="panel-raffle raffle-entered" ...>
@@ -84,6 +85,6 @@ for raffle in raffles:
     else:
         print('.', end='', flush=True)
 
-    random_sleep(wait_between_raffles_min, wait_between_raffles_max)
+    util.random_sleep(wait_between_raffles_min, wait_between_raffles_max)
 
 print('\nExecution completed')
