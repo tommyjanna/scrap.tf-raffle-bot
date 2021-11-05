@@ -17,7 +17,7 @@ or
 python3 main.py path/to/webdriver   # if web driver is stored elsewhere
 ```
 
-Finally, once running, you will be prompted to login through Steam on your own. Once completed, and returned to the main raffle page, press enter to begin entering raffles.
+Finally, once running, you will be prompted to login through Steam on your own. Once completed, and returned to the main raffle page, press enter to begin entering raffles. After logging in once, you cookie authentication login key will be stored in a new file, `scr_session`, and will be loaded automatically on future runs.
 
 Developed and tested using:
 * Debian 11
@@ -26,6 +26,6 @@ Developed and tested using:
 * Selenium 4.0.0
 
 ## Planned Features
-* Save cookies to retain persistent login
+* <s>Save cookies to retain persistent login</s> (Completed)
 * Option to run for long periods of time with new raffle detection
 * Detect raffles that have been won, skip them and inform user
