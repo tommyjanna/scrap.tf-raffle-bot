@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Cookie file
+scr_session
+
+# Firefox web driver
+geckodriver
+geckodriver.log

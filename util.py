@@ -10,7 +10,7 @@ import os.path
 
 def random_sleep(time_min: float, time_max: float) -> None:
     '''
-    Sleep for a random amount of time within an interval
+    Sleep for a random amount of time within an interval.
 
     Parameters:
         time_min (float): Lower time interval bound
@@ -22,26 +22,42 @@ def random_sleep(time_min: float, time_max: float) -> None:
 
 
 def cookie_read(filename: str) -> dict:
-    cookie = {}
+    '''
+    Reads a dictionary representation of a browser cookie. If the file does
+    not exist, the function will return None.
 
-    if os.path.exists(filename):
-        cookie_file = open(filename, 'r')
+    Parameters:
+        filename (str): Path to the cookie file
+    
+    Returns:
+        dict: Cookie that can be loaded using Selenium's add_cookie()
+    ''' 
 
-        cookie['name'] = 'scr_session'
-        cookie['value'] = cookie_file.readline()
-        cookie['path'] = '/'
-        cookie['domain'] = '.scrap.tf'
-        cookie['secure'] = True
-        cookie['httpOnly'] = True
-        cookie['expiry'] = int(cookie_file.readline())
+    if not os.path.exists(filename):
+        return None
 
-    return cookie
+    cookie_file = open(filename, 'r')
+    cookie_data = eval(cookie_file.read())
 
+    if not type(cookie_data) is dict:
+        raise Exception('Cookie file ' + filename + ' could not be evaluated \
+                        to a dictionary')
+        return None
+
+    return cookie_data
+    
 
 def cookie_write(filename: str, cookie: dict) -> None:
-    cookie_file = open(filename, 'w')
+    '''
+    Writes a dictionary representation of a cookie to a file. If the file does
+    not exist, it will be created. If a file already exists, it will be
+    overwritten.
 
-    if cookie['value'] and cookie['expiry']:
-        cookie_file.write(cookie['value'])
-        cookie_file.write('\n')
-        cookie_file.write(str(cookie['expiry']))
+    Parameters:
+        filename (str): Path to the cookie file
+        cookie (dict): Cookie data
+    '''
+
+    cookie_file = open(filename, 'w')
+    cookie_file.write(str(cookie))
+    cookie_file.close()

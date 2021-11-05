@@ -18,8 +18,8 @@ from selenium.webdriver.support import expected_conditions as EC
 
 # Time parameters
 wait_page_load = 10
-wait_between_raffles_min = 2.5
-wait_between_raffles_max = 7.5
+wait_between_raffles_min = 3.5
+wait_between_raffles_max = 9.5
 
 
 # User defined path to web driver
@@ -32,7 +32,7 @@ driver = webdriver.Firefox(service=serv)
 driver.get('https://scrap.tf/raffles')
 
 # Look for cookie file
-found_cookie = util.cookie_read('cookie')
+found_cookie = util.cookie_read('scr_session')
 
 if not found_cookie:
     print('Please sign in through Steam, then press enter to begin...')
@@ -40,13 +40,16 @@ if not found_cookie:
 
     # Get the cookie from the driver and write it to the cookie file
     found_cookie = driver.get_cookie('scr_session')
-    util.cookie_write('cookie', found_cookie)
+    util.cookie_write('scr_session', found_cookie)
+    print('Saved login to cookie file, scr_session')
 else:
+    print('Found login cookie file.')
+
     # Apply cookie found in the cookie file
     driver.add_cookie(found_cookie)
 
 # Reload webpage
-driver.get('https://scrap.tf/raffles')
+driver.refresh()
 
 # Make sure user is logged in
 if not driver.find_elements_by_xpath('//li[@class="dropdown nav-userinfo"]'):
@@ -87,4 +90,5 @@ for raffle in raffles:
 
     util.random_sleep(wait_between_raffles_min, wait_between_raffles_max)
 
+driver.quit()
 print('\nExecution completed')
